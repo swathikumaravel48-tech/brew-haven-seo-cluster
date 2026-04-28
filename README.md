@@ -1,28 +1,54 @@
-# ☕ Brew Haven Café – SEO Content Cluster Project
+# ☕ Brew Haven Café – AI SEO Content Cluster Project
 
-## Overview
-AI-powered SEO strategy designed to improve local search visibility for Brew Haven Café.
+## 🎯 Objective
+This project demonstrates an AI-powered SEO Content Strategy for a café business. It includes keyword research, clustering, content mapping, blog generation, and UGC ad creation using prompt engineering techniques.
 
-## Objectives
-- Improve Google ranking
-- Increase organic traffic
-- Target local customers in Chennai
+---
 
-## Strategy
-- Keyword research
-- Content cluster model
-- AI-generated SEO blogs
-- Internal linking structure
+## 🧠 Project Workflow
 
-## Project Includes
-- Keyword research
-- Pillar blog
-- Supporting SEO blogs
-- Strategy documentation
-- Monetization plan
+1. Keyword Research
+2. Keyword Clustering
+3. Content Strategy Mapping
+4. AI Blog Generation
+5. UGC Ad Creation
+6. Final Outputs
 
-## Business Value
-This model can be used by cafés and local businesses to grow online presence and attract customers organically.
+---
 
-## Tags
-#SEO #AI #ContentMarketing #DigitalMarketing #FutureInterns
+## 🛠️ Tools Used
+- AI Prompt Engineering (ChatGPT)
+- SEO Strategy Techniques
+- Content Marketing Concepts
+- GitHub for Version Control
+
+---
+
+## 📊 Key Features
+
+- Keyword research for café niche
+- SEO content clustering
+- AI-generated pillar blog (1500+ words)
+- UGC ad scripts for social media marketing
+- Local SEO optimization strategy
+
+---
+
+## 📁 Folder Structure
+
+- 01_keyword_research → Raw keywords
+- 02_keyword_clustering → Clustered SEO keywords
+- 03_content_mapping → Blog mapping strategy
+- 04_blog_content → Pillar blog content
+- 05_ugc_ads → Ad scripts & captions
+- 06_outputs → Final combined results
+
+---
+
+## 🚀 Outcome
+This project shows how AI can be used to scale SEO content creation and digital marketing for local businesses.
+
+---
+
+## 📌 Hashtags
+#SEO #AI #DigitalMarketing #ContentStrategy #UGCAds #BrewHavenCafe
