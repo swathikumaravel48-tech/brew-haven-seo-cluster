@@ -75,7 +75,6 @@ This shows how AI can be used to scale content creation and marketing strategies
 ## 👤 Author
 
 **Swathi K**  
-AI & Digital Marketing Enthusiast  
 GitHub: https://github.com/swathikumaravel48-tech
 
 
