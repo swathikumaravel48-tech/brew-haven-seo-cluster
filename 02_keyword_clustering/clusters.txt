@@ -1,1 +1,39 @@
+# Brew Haven Café – Keyword Clustering
 
+## Cluster 1: Café Discovery Intent
+- café near me
+- best café in Chennai
+- coffee shop Chennai
+- café open now Chennai
+
+👉 Intent: Users looking to find cafés nearby
+
+---
+
+## Cluster 2: Study & Work Cafés
+- study café Chennai
+- quiet café for work in Chennai
+- café with WiFi Chennai
+- laptop friendly café Chennai
+
+👉 Intent: Students and remote workers searching for workspace
+
+---
+
+## Cluster 3: Aesthetic & Instagram Cafés
+- aesthetic café Chennai
+- Instagram-worthy cafés Chennai
+- cozy café ambience Chennai
+- beautiful coffee shops Chennai
+
+👉 Intent: Users looking for experience + visuals
+
+---
+
+## Cluster 4: Budget-Friendly Cafés
+- affordable cafés in Chennai
+- cheap coffee shops Chennai
+- low cost café Chennai
+- budget café near me
+
+👉 Intent: Price-sensitive users
