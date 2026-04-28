@@ -31,4 +31,29 @@ To build a structured SEO + Content Marketing system using AI to improve visibil
 
 ---
 
+
 ## 📁 Project Structure
+
+```
+brew-haven-seo-cluster/
+│
+├── 01_keyword_research/
+│   └── keywords.txt
+│
+├── 02_keyword_clustering/
+│   └── clusters.txt
+│
+├── 03_content_mapping/
+│   └── content_map.txt
+│
+├── 04_blog_content/
+│   └── pillar_blog.txt
+│
+├── 05_ugc_ads/
+│   └── ugc_ads.txt
+│
+└── 06_outputs/
+    └── final_summary.txt
+```
+
+
