@@ -1,1 +1,65 @@
+# Brew Haven Café – Content Mapping Strategy
 
+## Cluster 1: Café Discovery Intent
+Keywords:
+- best café in Chennai
+- coffee shop Chennai
+- café near me
+
+Blog Title:
+Top 10 Cafés in Chennai You Must Visit in 2026
+
+Target Keyword:
+best café in Chennai
+
+SEO Meta Description:
+Discover the top cafés in Chennai offering great coffee, ambience, and experience for café lovers.
+
+---
+
+## Cluster 2: Study & Work Cafés
+Keywords:
+- study café Chennai
+- café with WiFi Chennai
+- quiet café for work
+
+Blog Title:
+Best Study Cafés in Chennai for Students and Freelancers
+
+Target Keyword:
+study café Chennai
+
+SEO Meta Description:
+Find the best quiet and WiFi-enabled cafés in Chennai perfect for studying and remote work.
+
+---
+
+## Cluster 3: Aesthetic Cafés
+Keywords:
+- aesthetic café Chennai
+- Instagram-worthy cafés Chennai
+
+Blog Title:
+Most Aesthetic Cafés in Chennai for Instagram Lovers
+
+Target Keyword:
+aesthetic café Chennai
+
+SEO Meta Description:
+Explore beautiful and aesthetic cafés in Chennai perfect for photos, vibes, and relaxing experiences.
+
+---
+
+## Cluster 4: Budget Cafés
+Keywords:
+- affordable cafés Chennai
+- cheap coffee shops Chennai
+
+Blog Title:
+Affordable Cafés in Chennai That Don’t Compromise on Quality
+
+Target Keyword:
+affordable cafés Chennai
+
+SEO Meta Description:
+Discover budget-friendly cafés in Chennai offering great taste and cozy ambience at low prices.
