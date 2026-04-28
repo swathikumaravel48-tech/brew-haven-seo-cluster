@@ -1,54 +1,34 @@
-# ☕ Brew Haven Café – AI SEO Content Cluster Project
+# ☕ Brew Haven Café – AI-Powered SEO Content Marketing System
+
+## 🚀 Project Overview
+This project demonstrates an end-to-end AI-powered SEO Content Marketing workflow for a café business. It simulates how digital marketing agencies use AI to scale keyword research, content strategy, blog creation, and social media advertising.
+
+---
 
 ## 🎯 Objective
-This project demonstrates an AI-powered SEO Content Strategy for a café business. It includes keyword research, clustering, content mapping, blog generation, and UGC ad creation using prompt engineering techniques.
+To build a structured SEO + Content Marketing system using AI to improve visibility, engagement, and brand awareness for a café business.
 
 ---
 
-## 🧠 Project Workflow
+## 🧠 What This Project Covers
 
-1. Keyword Research
-2. Keyword Clustering
-3. Content Strategy Mapping
-4. AI Blog Generation
-5. UGC Ad Creation
-6. Final Outputs
-
----
-
-## 🛠️ Tools Used
-- AI Prompt Engineering (ChatGPT)
-- SEO Strategy Techniques
-- Content Marketing Concepts
-- GitHub for Version Control
+✔ Keyword Research (SEO foundation)  
+✔ Keyword Clustering (content grouping strategy)  
+✔ Content Mapping (SEO planning system)  
+✔ AI Blog Generation (1500+ words)  
+✔ UGC Ad Script Creation (social media marketing)  
+✔ Final SEO Strategy Packaging  
 
 ---
 
-## 📊 Key Features
+## 🛠️ Tools & Skills Used
 
-- Keyword research for café niche
-- SEO content clustering
-- AI-generated pillar blog (1500+ words)
-- UGC ad scripts for social media marketing
-- Local SEO optimization strategy
-
----
-
-## 📁 Folder Structure
-
-- 01_keyword_research → Raw keywords
-- 02_keyword_clustering → Clustered SEO keywords
-- 03_content_mapping → Blog mapping strategy
-- 04_blog_content → Pillar blog content
-- 05_ugc_ads → Ad scripts & captions
-- 06_outputs → Final combined results
+- AI Prompt Engineering
+- SEO Strategy Planning
+- Content Marketing
+- Digital Advertising (UGC style)
+- Git & GitHub Project Structuring
 
 ---
 
-## 🚀 Outcome
-This project shows how AI can be used to scale SEO content creation and digital marketing for local businesses.
-
----
-
-## 📌 Hashtags
-#SEO #AI #DigitalMarketing #ContentStrategy #UGCAds #BrewHavenCafe
+## 📁 Project Structure
