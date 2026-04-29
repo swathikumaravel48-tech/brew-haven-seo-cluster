@@ -1,1 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FUTURE_PE_03 — AI SEO Blog & Content Cluster Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--surface:#13131a;--surface2:#1c1c28;--border:rgba(255,255,255,0.07);--accent:#6e7bff;--accent2:#c8f064;--accent3:#ff6b6b;--accent4:#ffd166;--text:#f0f0f5;--muted:#6b6b80;--card-radius:16px}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:999;opacity:0.4}
+  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:60px 24px 80px;position:relative;overflow:hidden}
+  .hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(110,123,255,0.15) 0%,transparent 70%);top:-100px;right:-200px;pointer-events:none}
+  .hero-glow2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(200,240,100,0.08) 0%,transparent 70%);bottom:-50px;left:-100px;pointer-events:none}
+  .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(110,123,255,0.1);border:1px solid rgba(110,123,255,0.25);color:var(--accent);font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:32px;width:fit-content;animation:fadeUp 0.6s ease both}
+  .badge::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes slide{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+  .hero h1{font-family:'Syne',sans-serif;font-size:clamp(36px,8vw,64px);font-weight:800;line-height:1.05;letter-spacing:-0.02em;margin-bottom:20px;animation:fadeUp 0.6s 0.1s ease both}
+  .hero h1 span{color:var(--accent)}
+  .hero-sub{font-size:16px;color:var(--muted);max-width:520px;margin-bottom:40px;font-weight:300;animation:fadeUp 0.6s 0.2s ease both}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:12px;animation:fadeUp 0.6s 0.3s ease both}
+  .meta-pill{background:var(--surface);border:1px solid var(--border);padding:8px 16px;border-radius:100px;font-size:12px;color:var(--muted);font-weight:500}
+  .meta-pill strong{color:var(--text)}
+  .scroll-hint{position:absolute;bottom:32px;left:24px;display:flex;align-items:center;gap:10px;font-size:11px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;animation:fadeUp 0.6s 0.5s ease both}
+  .scroll-line{width:40px;height:1px;background:var(--muted);position:relative;overflow:hidden}
+  .scroll-line::after{content:'';position:absolute;height:100%;width:100%;background:var(--accent);animation:slide 1.5s infinite}
+  section{padding:80px 24px;max-width:900px;margin:0 auto}
+  .section-label{font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+  .section-title{font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,42px);font-weight:800;letter-spacing:-0.02em;margin-bottom:48px;line-height:1.1}
+  .divider{height:1px;background:linear-gradient(to right,transparent,var(--border),transparent);margin:0 24px}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease}
+  .reveal.visible{opacity:1;transform:translateY(0)}
 
+  /* CLUSTER MAP */
+  .cluster-map{background:var(--surface);border:1px solid var(--border);border-radius:var(--card-radius);padding:32px 28px}
+  .pillar-node{background:rgba(110,123,255,0.12);border:2px solid rgba(110,123,255,0.4);border-radius:12px;padding:20px 22px;margin-bottom:24px;text-align:center}
+  .pillar-label{font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+  .pillar-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--text)}
+  .pillar-keyword{font-size:12px;color:var(--muted);margin-top:4px}
+  .cluster-connector{text-align:center;font-size:18px;color:var(--muted);margin-bottom:16px}
+  .cluster-nodes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .cluster-node{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;transition:border-color 0.3s}
+  .cluster-node:hover{border-color:rgba(110,123,255,0.3)}
+  .cluster-node-num{font-size:10px;font-weight:700;color:var(--accent);margin-bottom:4px;letter-spacing:0.08em}
+  .cluster-node-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:4px}
+  .cluster-node-kw{font-size:11px;color:var(--muted)}
+  .intent-badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:100px;margin-top:6px}
+  .intent-info{background:rgba(110,123,255,0.12);color:var(--accent);border:1px solid rgba(110,123,255,0.2)}
+  .intent-trans{background:rgba(200,240,100,0.1);color:var(--accent2);border:1px solid rgba(200,240,100,0.2)}
+  .intent-nav{background:rgba(255,107,107,0.1);color:var(--accent3);border:1px solid rgba(255,107,107,0.2)}
+
+  /* BLOG OUTLINE */
+  .tab-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+  .tab-btn{background:var(--surface);border:1px solid var(--border);padding:8px 18px;border-radius:100px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all 0.2s}
+  .tab-btn.active,.tab-btn:hover{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+  .tab-panel{display:none}
+  .tab-panel.active{display:block}
+  .blog-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--card-radius);overflow:hidden}
+  .blog-header{padding:24px 28px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+  .blog-header-left h2{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:6px;line-height:1.3}
+  .blog-header-left p{font-size:12px;color:var(--muted)}
+  .intent-pill{font-size:11px;font-weight:600;padding:5px 12px;border-radius:100px;white-space:nowrap;flex-shrink:0}
+  .ip-info{background:rgba(110,123,255,0.12);color:var(--accent);border:1px solid rgba(110,123,255,0.25)}
+  .ip-local{background:rgba(200,240,100,0.1);color:var(--accent2);border:1px solid rgba(200,240,100,0.2)}
+  .ip-trans{background:rgba(255,209,102,0.12);color:var(--accent4);border:1px solid rgba(255,209,102,0.25)}
+  .blog-content{padding:24px 28px}
+  .outline-section{margin-bottom:20px}
+  .outline-h1{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text);margin-bottom:12px;padding-left:0}
+  .outline-h2{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;padding-left:16px;border-left:2px solid var(--accent)}
+  .outline-h3{font-size:13px;color:var(--muted);margin-bottom:4px;padding-left:32px}
+  .outline-block{background:var(--surface2);border-radius:10px;padding:16px 18px;margin-bottom:10px}
+  .outline-label{font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+  .seo-meta-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+  .seo-meta-block{background:var(--surface2);border-radius:10px;padding:14px 16px}
+  .seo-meta-label{font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .seo-meta-value{font-size:13px;color:var(--text);line-height:1.5}
+
+  /* PROMPT LOGIC */
+  .prompt-logic{background:rgba(110,123,255,0.05);border:1px solid rgba(110,123,255,0.15);border-radius:10px;padding:14px 18px;margin-top:16px;font-size:13px;color:#9aa8ff;line-height:1.7}
+  .prompt-logic strong{color:var(--accent);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:6px}
+
+  /* LOCAL SEO */
+  .local-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .local-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;transition:border-color 0.3s}
+  .local-card:hover{border-color:rgba(200,240,100,0.3)}
+  .local-city{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent2);margin-bottom:4px}
+  .local-keyword{font-size:13px;color:var(--text);font-weight:500;margin-bottom:6px}
+  .local-intent{font-size:12px;color:var(--muted)}
+
+  /* INTERNAL LINKING */
+  .linking-table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:var(--card-radius);overflow:hidden;border:1px solid var(--border)}
+  .linking-table thead{background:var(--surface2)}
+  .linking-table th{text-align:left;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:14px 18px;border-bottom:1px solid var(--border)}
+  .linking-table td{padding:13px 18px;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:top}
+  .linking-table tr:last-child td{border-bottom:none}
+  .linking-table td:first-child{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--accent)}
+
+  /* SUMMARY TABLE */
+  .summary-table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:var(--card-radius);overflow:hidden;border:1px solid var(--border)}
+  .summary-table thead{background:var(--surface2)}
+  .summary-table th{text-align:left;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:14px 18px;border-bottom:1px solid var(--border)}
+  .summary-table td{padding:13px 18px;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:top}
+  .summary-table tr:last-child td{border-bottom:none}
+  .summary-table td:first-child{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--accent)}
+
+  footer{border-top:1px solid var(--border);padding:40px 24px;text-align:center;color:var(--muted);font-size:13px}
+  footer a{color:var(--accent);text-decoration:none}
+  footer .footer-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px}
+  @media(max-width:600px){.cluster-nodes{grid-template-columns:1fr}.seo-meta-row{grid-template-columns:1fr}.local-grid{grid-template-columns:1fr}.blog-header{flex-direction:column}.hero h1{font-size:36px}}
+</style>
+  </head>
+<body>
+<div class="hero">
+  <div class="hero-glow"></div><div class="hero-glow2"></div>
+  <div class="badge">Future Interns · Prompt Engineering Track · Task 3</div>
+  <h1>AI SEO Blog &<br><span>Content Cluster</span></h1>
+  <p class="hero-sub">Building a complete SEO content system for Brew Haven Café — pillar page, blog outlines, content clusters, local SEO adaptation, and internal linking strategy using structured prompt engineering.</p>
+  <div class="hero-meta">
+    <div class="meta-pill">🛠 <strong>Claude · ChatGPT</strong></div>
+    <div class="meta-pill">🗂 <strong>1 Pillar + 5 Cluster Blogs</strong></div>
+    <div class="meta-pill">📍 <strong>Local SEO Adapted</strong></div>
+    <div class="meta-pill">👩‍💻 <strong>Swathi K</strong></div>
+  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div>Scroll to explore</div>
+</div>
+<div class="divider"></div>
+
+<!-- CLUSTER MAP -->
+<section>
+  <div class="section-label reveal">Step 1 — Architecture</div>
+  <div class="section-title reveal">Content Cluster Map<br>Brew Haven Café</div>
+
+  <div class="cluster-map reveal">
+    <div class="pillar-node">
+      <div class="pillar-label">🏛 Pillar Page</div>
+      <div class="pillar-title">The Ultimate Guide to Café Culture in Chennai</div>
+      <div class="pillar-keyword">Target Keyword: cafés in Chennai · Search Intent: Informational + Commercial</div>
+    </div>
+    <div class="cluster-connector">↕ Internal Links ↕</div>
+    <div class="cluster-nodes">
+      <div class="cluster-node">
+        <div class="cluster-node-num">CLUSTER 01</div>
+        <div class="cluster-node-title">Best Study Cafés in Chennai for Students</div>
+        <div class="cluster-node-kw">study café Chennai, cafés with WiFi Chennai</div>
+        <div class="intent-badge intent-info">Informational</div>
+      </div>
+      <div class="cluster-node">
+        <div class="cluster-node-num">CLUSTER 02</div>
+        <div class="cluster-node-title">How to Find a Café for Remote Work in Anna Nagar</div>
+        <div class="cluster-node-kw">work from café Chennai, remote work café Anna Nagar</div>
+        <div class="intent-badge intent-info">Informational</div>
+      </div>
+      <div class="cluster-node">
+        <div class="cluster-node-num">CLUSTER 03</div>
+        <div class="cluster-node-title">Specialty Coffee Guide: Single Origin vs Blends</div>
+        <div class="cluster-node-kw">specialty coffee Chennai, single origin coffee</div>
+        <div class="intent-badge intent-info">Informational</div>
+      </div>
+      <div class="cluster-node">
+        <div class="cluster-node-num">CLUSTER 04</div>
+        <div class="cluster-node-title">Aesthetic Cafés in Chennai Worth Visiting in 2025</div>
+        <div class="cluster-node-kw">aesthetic cafés Chennai, Instagram cafés Chennai</div>
+        <div class="intent-badge intent-trans">Navigational</div>
+      </div>
+      <div class="cluster-node">
+        <div class="cluster-node-num">CLUSTER 05</div>
+        <div class="cluster-node-title">Best Cafés for Group Study Sessions in Chennai</div>
+        <div class="cluster-node-kw">group study café Chennai, book study table café</div>
+        <div class="intent-badge intent-trans">Transactional</div>
+      </div>
+    </div>
+  </div>
+  <div class="prompt-logic reveal">
+    <strong>Prompt Logic</strong>
+    A content cluster is built around one pillar page targeting a broad keyword, supported by cluster articles targeting long-tail variations. Internal links from cluster → pillar boost the pillar's authority. The prompt specified: "create a pillar + 5 cluster blogs with internal linking suggestions" to force this architecture rather than generating isolated posts.
+  </div>
+</section>
+<div class="divider"></div>
+  <!-- BLOG OUTLINES -->
+<section>
+  <div class="section-label reveal">Step 2 — Blog Outlines</div>
+  <div class="section-title reveal">SEO Blog Outlines<br>H1–H3 Structure</div>
+
+  <div class="tab-bar reveal">
+    <button class="tab-btn active" onclick="showTab('pillar',this)">🏛 Pillar Blog</button>
+    <button class="tab-btn" onclick="showTab('study',this)">📚 Study Cafés</button>
+    <button class="tab-btn" onclick="showTab('remote',this)">💻 Remote Work</button>
+    <button class="tab-btn" onclick="showTab('coffee',this)">☕ Specialty Coffee</button>
+  </div>
+
+  <!-- PILLAR -->
+  <div class="tab-panel active" id="tab-pillar">
+    <div class="blog-card">
+      <div class="blog-header">
+        <div class="blog-header-left">
+          <h2>The Ultimate Guide to Café Culture in Chennai (2025)</h2>
+          <p>Pillar Page · Long-form · 2,500–3,000 words · Brew Haven Café</p>
+        </div>
+        <span class="intent-pill ip-info">Informational</span>
+      </div>
+      <div class="blog-content">
+        <div class="outline-block">
+          <div class="outline-label">H1 — Page Title</div>
+          <div class="outline-h1">The Ultimate Guide to Café Culture in Chennai: Best Spots, Coffee Types & What to Look For</div>
+        </div>
+        <div class="outline-block">
+          <div class="outline-label">Introduction (100–120 words)</div>
+          <div class="outline-h2" style="padding-left:0;border-left:none;font-size:13px;color:var(--muted);font-weight:400">Hook with a relatable scenario → problem statement (hard to find the right café) → promise of the article (complete guide) → brief mention of Brew Haven as a local example</div>
+        </div>
+        <div class="outline-block">
+          <div class="outline-label">Body Structure</div>
+          <div class="outline-h2">H2: What Makes a Great Café in Chennai?</div>
+          <div class="outline-h3">H3: WiFi & Power Outlets — Why They Matter</div>
+          <div class="outline-h3">H3: Ambiance for Different Moods (Work / Chill / Social)</div>
+          <div class="outline-h3">H3: Coffee Quality — What to Look For</div>
+          <div class="outline-h2" style="margin-top:12px">H2: Types of Cafés in Chennai</div>
+          <div class="outline-h3">H3: Specialty Coffee Shops</div>
+          <div class="outline-h3">H3: Study & Work-Friendly Cafés</div>
+          <div class="outline-h3">H3: Aesthetic & Instagram-Worthy Cafés</div>
+          <div class="outline-h2" style="margin-top:12px">H2: Neighbourhood Guide — Best Café Areas in Chennai</div>
+          <div class="outline-h3">H3: Anna Nagar Café Scene</div>
+          <div class="outline-h3">H3: T Nagar & Nungambakkam</div>
+          <div class="outline-h3">H3: OMR & ECR for Café Hoppers</div>
+          <div class="outline-h2" style="margin-top:12px">H2: Brew Haven Café — A Chennai Favourite</div>
+          <div class="outline-h3">H3: What Makes Brew Haven Different</div>
+          <div class="outline-h3">H3: Perfect for Students, Professionals & Coffee Lovers</div>
+          <div class="outline-h2" style="margin-top:12px">H2: How to Choose the Right Café for Your Needs</div>
+          <div class="outline-h2" style="margin-top:12px">H2: Frequently Asked Questions</div>
+        </div>
+        <div class="seo-meta-row">
+          <div class="seo-meta-block"><div class="seo-meta-label">Primary Keyword</div><div class="seo-meta-value">cafés in Chennai</div></div>
+          <div class="seo-meta-block"><div class="seo-meta-label">Secondary Keywords</div><div class="seo-meta-value">best cafés Chennai, coffee shops Chennai 2025</div></div>
+          <div class="seo-meta-block"><div class="seo-meta-label">Meta Title</div><div class="seo-meta-value">Best Cafés in Chennai (2025) — Ultimate Guide | Brew Haven</div></div>
+          <div class="seo-meta-block"><div class="seo-meta-label">Meta Description</div><div class="seo-meta-value">Discover Chennai's best cafés for work, study & coffee lovers. Complete guide covering specialty coffee, ambiance & top spots — including Brew Haven Café.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="prompt-logic">
+      <strong>Prompt Logic</strong>
+      "Generate an SEO blog outline with H1–H3 structure, meta title, meta description, and keyword placement notes" produced a complete blueprint rather than just content. Including Brew Haven naturally in the H2 section (not forced as H1) mirrors best-practice branded content SEO.
+    </div>
+  </div>
+  <div class="tab-panel" id="tab-study">
+    <div class="blog-card">
+      <div class="blog-header">
+        <div class="blog-header-left">
+          <h2>Best Study Cafés in Chennai for Students (2025 Guide)</h2>
+          <p>Cluster Blog 01 · 1,200–1,500 words · Links to Pillar Page</p>
+        </div>
+        <span class="intent-pill ip-info">Informational</span>
+      </div>
+      <div class="blog-content">
+        <div class="outline-block">
+          <div class="outline-label">H1 — Page Title</div>
+          <div class="outline-h1">7 Best Study Cafés in Chennai for Students Who Need to Focus (2025)</div>
+        </div>
+        <div class="outline-block">
+          <div class="outline-label">Body Structure</div>
+          <div class="outline-h2">H2: What to Look for in a Study Café</div>
+          <div class="outline-h3">H3: WiFi Speed & Reliability</div>
+          <div class="outline-h3">H3: Noise Levels & Ambiance</div>
+          <div class="outline-h3">H3: Power Outlets & Seating Comfort</div>
+          <div class="outline-h2" style="margin-top:12px">H2: Top 7 Study Cafés in Chennai</div>
+          <div class="outline-h3">H3: #1 Brew Haven Café, Anna Nagar — Best Overall Study Spot</div>
+          <div class="outline-h3">H3: #2–7 Other Recommended Options</div>
+          <div class="outline-h2" style="margin-top:12px">H2: Tips for Being a Good Study Café Customer</div>
+          <div class="outline-h2" style="margin-top:12px">H2: Final Verdict — Which Study Café Should You Visit?</div>
+        </div>
+        <div class="seo-meta-row">
+          <div class="seo-meta-block"><div class="seo-meta-label">Primary Keyword</div><div class="seo-meta-value">study cafés in Chennai</div></div>
+          <div class="seo-meta-block"><div class="seo-meta-label">Internal Link To</div><div class="seo-meta-value">Pillar: "Café Culture Guide in Chennai"</div></div>
+          <div class="seo-meta-block"><div class="seo-meta-label">Local SEO City</div><div class="seo-meta-value">Chennai → Anna Nagar (neighbourhood level)</div></div>
+          <div class="seo-meta-block"><div class="seo-meta-label">Search Intent</div><div class="seo-meta-value">Informational — "Where should I study?"</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="prompt-logic">
+      <strong>Prompt Logic</strong>
+      "Adapt blog for local SEO: city + neighbourhood + service" instruction produced location-specific H3 headings ("Anna Nagar") instead of generic ones. Instructing Brew Haven as "#1" in a listicle format naturally earns the featured snippet position for this keyword.
+    </div>
+  </div>
+
+  <!-- REMOTE -->
+  <div class="tab-panel" id="tab-remote">
+    <div class="blog-card">
+      <div class="blog-header">
+        <div class="blog-header-left">
+          <h2>How to Find the Perfect Café for Remote Work in Anna Nagar, Chennai</h2>
+          <p>Cluster Blog 02 · 1,000–1,200 words · Links to Pillar Page</p>
+        </div>
+        <span class="intent-pill ip-local">Local SEO</span>
+      </div>
+      <div class="blog-content">
+        <div class="outline-block">
+          <div class="outline-label">H1 — Page Title</div>
+          <div class="outline-h1">Working From a Café in Anna Nagar? Here's What to Look For (Chennai Remote Work Guide)</div>
+        </div>
+        <div class="outline-block">
+          <div class="outline-label">Body Structure</div>
+          <div class="outline-h2">H2: Why More Professionals Are Working From Cafés in Chennai</div>
+          <div class="outline-h3">H3: The Rise of Remote Work in Chennai's Tech Sector</div>
+          <div class="outline-h3">H3: Why Cafés Beat Co-Working Spaces for Short Sessions</div>
+          <div class="outline-h2" style="margin-top:12px">H2: What to Check Before Choosing a Work Café</div>
+          <div class="outline-h3">H3: Internet Speed (How to Test on Arrival)</div>
+          <div class="outline-h3">H3: Noise Management & Call-Friendly Zones</div>
+          <div class="outline-h3">H3: Table Space & Ergonomics</div>
+          <div class="outline-h2" style="margin-top:12px">H2: Best Cafés for Remote Work in Anna Nagar</div>
+          <div class="outline-h3">H3: Brew Haven Café — Top Pick for Remote Workers</div>
+          <div class="outline-h2" style="margin-top:12px">H2: Remote Work Café Etiquette — Dos and Don'ts</div>
+          <div class="outline-h2" style="margin-top:12px">H2: Frequently Asked Questions</div>
+        </div>
+        <div class="seo-meta-row">
+          <div class="seo-meta-block"><div class="seo-meta-label">Primary Keyword</div><div class="seo-meta-value">work from café Anna Nagar Chennai</div></div>
+          <div class="seo-meta-block"><div class="seo-meta-label">Internal Link To</div><div class="seo-meta-value">Cluster 01: Study Cafés + Pillar Page</div></div>
+          <div class="seo-meta-block"><div class="seo-meta-label">Local SEO</div><div class="seo-meta-value">Anna Nagar (neighbourhood) + Chennai (city)</div></div>
+          <div class="seo-meta-block"><div class="seo-meta-label">Search Intent</div><div class="seo-meta-value">Informational → Navigational</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="prompt-logic">
+      <strong>Prompt Logic</strong>
+      "Adapt for local SEO: city + service combo" at the neighbourhood level (Anna Nagar, not just Chennai) captures hyper-local search intent with lower keyword competition. Including a practical H3 ("How to Test WiFi on Arrival") adds E-E-A-T signals — content that only someone with real experience would write.
+    </div>
+  </div>
+  <!-- COFFEE -->
+  <div class="tab-panel" id="tab-coffee">
+    <div class="blog-card">
+      <div class="blog-header">
+        <div class="blog-header-left">
+          <h2>Single Origin vs Blended Coffee: What's the Difference and Which Should You Try?</h2>
+          <p>Cluster Blog 03 · 1,000–1,200 words · Links to Pillar Page</p>
+        </div>
+        <span class="intent-pill ip-trans">Commercial</span>
+      </div>
+      <div class="blog-content">
+        <div class="outline-block">
+          <div class="outline-label">H1 — Page Title</div>
+          <div class="outline-h1">Single Origin vs Blended Coffee Explained: A Beginner's Guide for Chennai Coffee Lovers</div>
+        </div>
+        <div class="outline-block">
+          <div class="outline-label">Body Structure</div>
+          <div class="outline-h2">H2: What Is Single Origin Coffee?</div>
+          <div class="outline-h3">H3: How Single Origin Coffee Is Sourced</div>
+          <div class="outline-h3">H3: Flavour Profiles to Expect</div>
+          <div class="outline-h2" style="margin-top:12px">H2: What Is Blended Coffee?</div>
+          <div class="outline-h3">H3: Why Cafés Use Blends for Espresso</div>
+          <div class="outline-h3">H3: Consistency vs Complexity</div>
+          <div class="outline-h2" style="margin-top:12px">H2: Which Should You Order at Brew Haven Café?</div>
+          <div class="outline-h3">H3: Our Signature Single Origin Offerings</div>
+          <div class="outline-h3">H3: When to Choose a Blend</div>
+          <div class="outline-h2" style="margin-top:12px">H2: How to Taste the Difference</div>
+          <div class="outline-h2" style="margin-top:12px">H2: Where to Try Specialty Coffee in Chennai</div>
+        </div>
+        <div class="seo-meta-row">
+          <div class="seo-meta-block"><div class="seo-meta-label">Primary Keyword</div><div class="seo-meta-value">single origin coffee Chennai</div></div>
+          <div class="seo-meta-block"><div class="seo-meta-label">Internal Link To</div><div class="seo-meta-value">Pillar Page + Cluster 04 (Aesthetic Cafés)</div></div>
+          <div class="seo-meta-block"><div class="seo-meta-label">Brand Integration</div><div class="seo-meta-value">Brew Haven mentioned naturally in H2 recommendation section</div></div>
+          <div class="seo-meta-block"><div class="seo-meta-label">Search Intent</div><div class="seo-meta-value">Informational → Commercial Investigation</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="prompt-logic">
+      <strong>Prompt Logic</strong>
+      "Write long-form blogs optimized for search intent" — this post targets informational intent (what is X?) but bridges to commercial intent (where to try it?) by including Brew Haven's menu naturally. This is a classic SEO content strategy: educate → recommend → convert.
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- LOCAL SEO -->
+<section>
+  <div class="section-label reveal">Step 3 — Local SEO</div>
+  <div class="section-title reveal">City + Service<br>Keyword Combos</div>
+  <p class="reveal" style="color:var(--muted);font-size:14px;margin-bottom:28px;margin-top:-28px">Each blog is adapted with city + neighbourhood + service keywords to capture hyper-local search intent with lower competition.</p>
+
+  <div class="local-grid reveal">
+    <div class="local-card"><div class="local-city">Chennai (City)</div><div class="local-keyword">Best cafés in Chennai for students</div><div class="local-intent">→ Pillar Page</div></div>
+    <div class="local-card"><div class="local-city">Anna Nagar (Neighbourhood)</div><div class="local-keyword">Work from café Anna Nagar Chennai</div><div class="local-intent">→ Cluster Blog 02</div></div>
+    <div class="local-card"><div class="local-city">Chennai + Service</div><div class="local-keyword">Study café with WiFi Chennai</div><div class="local-intent">→ Cluster Blog 01</div></div>
+    <div class="local-card"><div class="local-city">Chennai + Occasion</div><div class="local-keyword">Group study café book table Chennai</div><div class="local-intent">→ Cluster Blog 05</div></div>
+    <div class="local-card"><div class="local-city">Chennai + Aesthetic</div><div class="local-keyword">Instagram cafés Chennai 2025</div><div class="local-intent">→ Cluster Blog 04</div></div>
+    <div class="local-card"><div class="local-city">Chennai + Coffee Type</div><div class="local-keyword">Specialty coffee single origin Chennai</div><div class="local-intent">→ Cluster Blog 03</div></div>
+  </div>
+
+  <div class="prompt-logic reveal">
+    <strong>Prompt Logic</strong>
+    "Adapt blogs for local SEO: use city + service keyword in H1 title" forces location terms into the most important on-page SEO element. Going to neighbourhood level (Anna Nagar) instead of just city level (Chennai) dramatically reduces keyword competition while still capturing relevant local traffic.
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- INTERNAL LINKING -->
+<section>
+  <div class="section-label reveal">Step 4 — Internal Linking</div>
+  <div class="section-title reveal">Content Cluster<br>Internal Link Map</div>
+
+  <table class="linking-table reveal">
+    <thead><tr><th>From Blog</th><th>Links To</th><th>Anchor Text Suggestion</th></tr></thead>
+    <tbody>
+      <tr><td>Cluster 01 — Study Cafés</td><td>Pillar Page</td><td>"complete guide to Chennai café culture"</td></tr>
+      <tr><td>Cluster 02 — Remote Work</td><td>Cluster 01 + Pillar</td><td>"best study cafés in Chennai" / "café guide"</td></tr>
+      <tr><td>Cluster 03 — Specialty Coffee</td><td>Pillar + Cluster 04</td><td>"aesthetic cafés Chennai" / "Chennai café guide"</td></tr>
+      <tr><td>Cluster 04 — Aesthetic Cafés</td><td>Pillar + Cluster 01</td><td>"study-friendly café" / "full Chennai café guide"</td></tr>
+      <tr><td>Cluster 05 — Group Study</td><td>Cluster 01 + Pillar</td><td>"best study cafés Chennai" / "book a table"</td></tr>
+      <tr><td>Pillar Page</td><td>All 5 Clusters</td><td>Natural contextual anchor text for each topic</td></tr>
+    </tbody>
+  </table>
+
+  <div class="prompt-logic reveal">
+    <strong>Prompt Logic</strong>
+    "Create internal linking ideas (content clusters)" was specified in the prompt. Each cluster links back to the pillar to concentrate authority. Cross-linking between clusters (Cluster 02 → Cluster 01) creates a web of topical authority rather than isolated pages — this is the core of the content cluster SEO model.
+  </div>
+</section>
+<div class="divider"></div>
+  <!-- TECHNIQUES -->
+<section>
+  <div class="section-label reveal">Prompt Engineering</div>
+  <div class="section-title reveal">Techniques Applied</div>
+
+  <table class="summary-table reveal">
+    <thead><tr><th>Technique</th><th>Applied In</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td>Architecture First</td><td>Cluster map prompt</td><td>Forces pillar + cluster structure before writing content</td></tr>
+      <tr><td>Search Intent Mapping</td><td>All blog prompts</td><td>Each blog targets a specific intent: info / local / commercial</td></tr>
+      <tr><td>Local SEO Instruction</td><td>All blog outlines</td><td>"City + neighbourhood + service" in H1 captures local traffic</td></tr>
+      <tr><td>Output Specification</td><td>All prompts</td><td>H1–H3 structure + meta title + meta description required per blog</td></tr>
+      <tr><td>Internal Link Prompt</td><td>Cluster map prompt</td><td>Explicit linking strategy prevents isolated orphan content</td></tr>
+      <tr><td>Brand Integration Rule</td><td>All blog prompts</td><td>"Mention brand naturally in H2, not forced as H1" avoids over-optimization</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<footer>
+  <div class="footer-name">Swathi K</div>
+  <p>Future Interns · Prompt Engineering Track · Task 3</p>
+  <p style="margin-top:12px"><a href="https://github.com/swathikumaravel48-tech/brew-haven-seo-cluster" target="_blank">→ View GitHub Repository</a></p>
+</footer>
+
+<script>
+  function showTab(id,btn){document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');btn.classList.add('active')}
+  const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting){el.target.classList.add('visible');obs.unobserve(el.target)}})},{threshold:0.08});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
